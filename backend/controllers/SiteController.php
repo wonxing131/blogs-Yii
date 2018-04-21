@@ -1,45 +1,18 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\Admin;
 use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
+
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
+    protected $access_except = ['login'];
+    protected $must_login = ['logout','index'];
+    protected $method = ['logout' => ['post']];
 
     /**
      * {@inheritdoc}
@@ -74,11 +47,12 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        $model = new Admin();
+        $post = Yii::$app->request->post();
+        if ($model->login($post)) {
             return $this->goBack();
         } else {
-            $model->password = '';
+            $model->admin_pass = '';
 
             return $this->render('login', [
                 'model' => $model,
@@ -95,6 +69,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->goHome();    //返回主页
+//        return $this->goBack(Yii::$app->request->referrer);   返回跳转页面
     }
 }

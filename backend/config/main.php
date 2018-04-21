@@ -17,9 +17,12 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            //设置用户组件实例
+            'identityClass' => 'backend\models\Admin',  //指定组件
+            'enableAutoLogin' => true,  //保持自动登录
+            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],    //cookie设置  只能通过http进行传输
+//            'idParam' => '__admin',   设置SESSION中存储内容下标
+//            'loginUrl' => ['/Member/auth']    设置登录地址
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend

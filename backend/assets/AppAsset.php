@@ -20,4 +20,14 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    //定义按需加载JS方法，注意加载顺序在最后
+    public static function addScript($view, $jsFile) {
+        $view->registerJsFile($jsFile, [AppAsset::className(), 'depends' => 'backend\assets\AppAsset']);
+    }
+
+    //定义按需加载css方法，注意加载顺序在最后
+    public static function addCss($view, $cssFile) {
+        $view->registerCssFile($cssFile, [AppAsset::className(), 'depends' => 'backend\assets\AppAsset']);
+    }
 }

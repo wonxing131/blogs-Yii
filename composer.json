@@ -38,5 +38,10 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "autoload": {
+        "files": [
+            "common/components/GlobalFunctions.php"
+        ]
+    }
 }
