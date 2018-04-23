@@ -14,8 +14,6 @@ use Yii;
 
 class AdminController extends BaseController
 {
-    protected $access_except = ['add'];
-
     public function actionAdd()
     {
         $model = new Admin();

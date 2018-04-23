@@ -19,8 +19,8 @@ class Common extends ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'create_at',
-                'updatedAtAttribute' => 'update_at',
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
 //                'value' => function (){
 //                    return date('Y-m-d H:i:s');
 //                }

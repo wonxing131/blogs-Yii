@@ -21,23 +21,54 @@ class Admin extends Common implements IdentityInterface
     public function rules()
     {
         return [
+            ['loginName','required','message'=>'登录帐号不能为空','on'=>'login'],
             ['admin_name','required','message'=>'管理员帐号不能为空','on'=>['add']],
+            ['admin_name','match','pattern'=>'/^[A-Za-z]+$/','message'=>'管理员帐号为纯字母','on'=>['add']],
             ['admin_name','unique','message'=>'管理员帐号已经存在','on'=>['add']],
-            ['admin_pass','required','message'=>'管理员密码不能为空','on'=>['add']],
+            ['admin_pass','required','message'=>'管理员密码不能为空','on'=>['add','login']],
+            ['admin_pass','validatePass'],
             ['surePass','required','message'=>'确认密码不能为空','on'=>['add']],
             ['surePass','compare','compareAttribute'=>'admin_pass','message'=>'两次密码输入不一致','on'=>['add']],
             ['admin_email','email','message'=>'邮箱格式不正确','on'=>['add']],
             ['admin_email','unique','message'=>'邮箱已经被注册','on'=>['add']],
             ['admin_mobile','match','pattern'=>'/^\d{11}$/','message'=>'手机号格式错误','on'=>['add']],
             ['admin_mobile','unique','message'=>'手机号已被注册','on'=>['add']],
-            ['admin_pass','mkPass','on'=>['add']]
+            ['admin_pass','mkPass','on'=>['add']],
+            ['rememberMe','boolean','on'=>'login'],
         ];
     }
 
+    /**
+     * 注册管理员设置登录密码
+     * @throws \yii\base\Exception
+     */
     public function mkPass()
     {
         $this->original_pass = $this->admin_pass;
         $this->admin_pass = Yii::$app->getSecurity()->generatePasswordHash($this->admin_pass);
+    }
+
+    public function validatePass()
+    {
+        if (!$this->hasErrors()){
+            if (preg_match("/^\d{11}$/", $this->loginName)) {
+                //手机号登录
+                $loginName = 'admin_mobile';
+            } elseif (preg_match("/([a-zA-Z0-9])+@+([a-zA-Z0-9])+.+([a-zA-Z0-9])/", $this->loginName)) {
+                //邮箱登录
+                $loginName = 'admin_email';
+            } else {
+                $loginName = 'admin_name';
+            }
+            $password = self::find()->select('admin_pass')->where($loginName.' = :loginName',[':loginName'=>$this->loginName])->one();
+            if (is_null($password)){
+                $this->addError('loginName','用户名不存在');
+                return false;
+            }
+            if (!Yii::$app->getSecurity()->validatePassword($this->admin_pass,$password->admin_pass)){
+                $this->addError('admin_pass','用户名或密码错误');
+            }
+        }
     }
 
     /**
@@ -51,7 +82,8 @@ class Admin extends Common implements IdentityInterface
             'admin_pass' => '管理员密码',
             'surePass' => '确认密码',
             'admin_mobile' => '管理员手机号',
-            'admin_email' => '管理员邮箱'
+            'admin_email' => '管理员邮箱',
+            'rememberMe' => '记住我'
         ];
     }
 
@@ -109,11 +141,20 @@ class Admin extends Common implements IdentityInterface
         return true;    //当前项目登录凭据在SESSION中存储 无需验证cookie密钥 返回true;
     }
 
+    /**
+     * 获取用户实例
+     * @return array|null|\yii\db\ActiveRecord
+     */
     public function getUser()
     {
-        return self::find()->where('admin_name = :name or admin_email = :name',[':name'=>$this->loginName])->one();
+        return self::find()->where('admin_name = :name or admin_email = :name or admin_mobile = :name',[':name'=>$this->loginName])->one();
     }
 
+    /**
+     * 管理员登录
+     * @param $data
+     * @return bool
+     */
     public function login($data)
     {
         $this->scenario = 'login';
@@ -123,6 +164,12 @@ class Admin extends Common implements IdentityInterface
         }
         return false;
     }
+
+    /**
+     * 添加管理员
+     * @param $data
+     * @return bool
+     */
     public function add($data)
     {
         $this->scenario = 'add';

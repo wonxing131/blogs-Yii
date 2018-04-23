@@ -12,7 +12,7 @@ class SiteController extends BaseController
 {
     protected $access_except = ['login'];
     protected $must_login = ['logout','index'];
-    protected $method = ['logout' => ['post']];
+    protected $method = ['logout' => ['get']];
 
     /**
      * {@inheritdoc}
@@ -46,14 +46,12 @@ class SiteController extends BaseController
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new Admin();
         $post = Yii::$app->request->post();
         if ($model->login($post)) {
             return $this->goBack();
         } else {
             $model->admin_pass = '';
-
             return $this->render('login', [
                 'model' => $model,
             ]);
@@ -67,7 +65,7 @@ class SiteController extends BaseController
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        Yii::$app->user->logout(false);
 
         return $this->goHome();    //返回主页
 //        return $this->goBack(Yii::$app->request->referrer);   返回跳转页面
