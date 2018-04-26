@@ -41,6 +41,8 @@
                         'items' => [
                             ['label'=>'管理员列表','icon'=>'dashboard','url'=>['/admin/list']],
                             ['label'=>'管理员添加','icon'=>'dashboard','url'=>['/admin/add']],
+                            ['label'=>'个人信息','icon'=>'dashboard','url'=>['/admin/my']],
+                            ['label'=>'修改密码','icon'=>'dashboard','url'=>['/admin/pass']],
                         ]
                     ],
                     [
@@ -78,6 +80,7 @@
                             ],
                         ],
                     ],
+                    ['label' => '退出登录', 'icon' => 'file-code-o', 'url' => ['/site/logout']],
                 ],
             ]
         ) ?>

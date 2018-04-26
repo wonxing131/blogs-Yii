@@ -46,4 +46,40 @@ class AdminController extends BaseController
             'searchModel' => $searchModel
         ]);
     }
+
+    /**
+     * 个人信息
+     * @return string
+     */
+    public function actionMy()
+    {
+        $model = new Admin();
+        $model = $model::findOne(Yii::$app->user->id);
+        $model->scenario = 'editMy';
+        if (Yii::$app->request->isPost){
+            $post = Yii::$app->request->post();
+            if ($model->editMy($post,$model)){
+                Yii::$app->session->setFlash('info','修改成功,请点击刷新按钮');
+            }
+        }
+        return $this->render('my',[
+            'model' => $model
+        ]);
+    }
+
+    public function actionPass()
+    {
+        $model = new Admin();
+        $model = $model::findOne(Yii::$app->user->id);
+        $model->scenario = 'editPass';
+        if (Yii::$app->request->post()){
+            $post = Yii::$app->request->post();
+            if ($model->editPass($post,$model)){
+                return $this->redirect('/site/logout');
+            }
+        }
+        return $this->render('pass',[
+            'model' => $model
+        ]);
+    }
 }

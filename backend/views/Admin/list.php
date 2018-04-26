@@ -45,7 +45,11 @@ $this->title = '管理员列表';
                                 return $data['admin_qq'] ? $data['admin_qq'] : '未设置';
                             }
                         ],
-                        'login_time:datetime:最后登录时间',
+                        [
+                            'label' => '最后登录时间',
+                            'attribute' => 'login_time',
+                            'value' => 'login_time'
+                        ],
                         'created_at:datetime:创建时间',
                         [
                             'class' => 'yii\grid\ActionColumn',

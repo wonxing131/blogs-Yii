@@ -17,5 +17,6 @@ return [
             'currencyCode' => 'EUR',
         ],
     ],
-    'language' => 'zh-CN'
+    'timeZone'=>'Asia/Chongqing',
+    'language' => 'zh-CN',
 ];
