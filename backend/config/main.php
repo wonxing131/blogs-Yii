@@ -11,7 +11,23 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+//    'modules' => [
+//        'admin' => [
+//            'class' => 'mdm\admin\Module',
+//            'layout' => 'left-menu',//yii2-admin的导航菜单
+//        ]
+//    ],
+//    "aliases" => [
+//        "@mdm/admin" => "@vendor/mdmsoft/yii2-admin",
+//    ],
+//    'as access' => [
+//        'class' => 'mdm\admin\components\AccessControl',
+//        'allowActions' => [
+//            //这里是允许访问的action
+//            //controller/action
+//            '*'
+//        ]
+//    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -28,6 +44,14 @@ return [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',    //使用DB形式存储节点用户信息等
+            //'class' => 'yii\rbac\PhpManager',    //使用文件形式存储节点用户信息等
+            'itemTable' => '{{%auth_item}}',    //数据库添加表前缀
+            'itemChildTable' => '{{%auth_item_child}}',
+            'assignmentTable' => '{{%auth_assignment}}',
+            'ruleTable' => '{{%auth_rule}}',
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -40,14 +64,21 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+
+        'urlManager' => [   //url管理
+            'enablePrettyUrl' => true,  //开启url美化
+            'showScriptName' => false,  //是否在url中显示入口脚本,url的进一步解析
+            // 是否启用严格解析，如启用严格解析，要求当前请求应至少匹配1个路由规则，
+            // 否则认为是无效路由。
+            // 这个选项仅在 enablePrettyUrl 启用后才有效。
+            'enableStrictParsing' => false,
+            'suffix' => '',
             'rules' => [
+                "<controller:\w+>/<id:\d+>"=>"<controller>/view",
+                "<controller:\w+>/<action:\w+>"=>"<controller>/<action>",
+                '' => 'site/index'
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

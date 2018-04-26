@@ -9,5 +9,13 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'formatter' => [    //格式化gridView中时间显示设置
+            'dateFormat' => 'YYY.MM.dd',
+            'datetimeFormat' => 'Y-M-d H:i:s',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'EUR',
+        ],
     ],
+    'language' => 'zh-CN'
 ];

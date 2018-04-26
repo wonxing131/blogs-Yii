@@ -5,7 +5,7 @@ $this->title = '添加管理员';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group'],
-    'inputTemplate' => "<div class='form-group'>{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span></div>"
+    'inputTemplate' => "<div class='form-group'>{input}</div>"
 ];
 $model->admin_pass = '';
 $model->surePass = '';

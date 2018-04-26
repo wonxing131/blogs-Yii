@@ -30,6 +30,14 @@ return [
                 ],
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',    //使用DB形式存储节点用户信息等
+            //'class' => 'yii\rbac\PhpManager',    //使用文件形式存储节点用户信息等
+            'itemTable' => '{{%auth_item}}',    //数据库添加表前缀
+            'itemChildTable' => '{{%auth_item_child}}',
+            'assignmentTable' => '{{%auth_assignment}}',
+            'ruleTable' => '{{%auth_rule}}'
+        ],
     ],
     'params' => $params,
 ];

@@ -35,6 +35,23 @@
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
+                        'label' => '管理员管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label'=>'管理员添加','icon'=>'dashboard','url'=>['/admin/add']]
+                        ]
+                    ],
+                    [
+                        'label' => '权限管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label'=>'角色列表','icon'=>'dashboard','url'=>['/permission/roles']],
+                            ['label'=>'添加角色','icon'=>'dashboard','url'=>['/permission/role-create']],
+                        ]
+                    ],
+                    [
                         'label' => 'Some tools',
                         'icon' => 'share',
                         'url' => '#',
