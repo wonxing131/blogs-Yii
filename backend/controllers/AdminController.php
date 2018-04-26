@@ -12,8 +12,13 @@ namespace backend\controllers;
 use backend\models\Admin;
 use Yii;
 
+
 class AdminController extends BaseController
 {
+    /**
+     * 管理员添加
+     * @return string
+     */
     public function actionAdd()
     {
         $model = new Admin();
@@ -24,6 +29,21 @@ class AdminController extends BaseController
         }
         return $this->render('add',[
             'model' => $model
+        ]);
+    }
+
+    /**
+     * 管理员列表
+     * @return string
+     */
+    public function actionList()
+    {
+        $get = Yii::$app->request->get();
+        $searchModel = new Admin();
+        $data = $searchModel->getList($get);
+        return $this->render('list',[
+            'data' => $data,
+            'searchModel' => $searchModel
         ]);
     }
 }

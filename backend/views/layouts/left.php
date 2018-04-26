@@ -39,7 +39,8 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label'=>'管理员添加','icon'=>'dashboard','url'=>['/admin/add']]
+                            ['label'=>'管理员列表','icon'=>'dashboard','url'=>['/admin/list']],
+                            ['label'=>'管理员添加','icon'=>'dashboard','url'=>['/admin/add']],
                         ]
                     ],
                     [

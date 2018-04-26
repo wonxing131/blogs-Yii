@@ -10,6 +10,8 @@ namespace backend\models;
 
 use yii\web\IdentityInterface;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 class Admin extends Common implements IdentityInterface
 {
@@ -26,7 +28,7 @@ class Admin extends Common implements IdentityInterface
             ['admin_name','match','pattern'=>'/^[A-Za-z]+$/','message'=>'管理员帐号为纯字母','on'=>['add']],
             ['admin_name','unique','message'=>'管理员帐号已经存在','on'=>['add']],
             ['admin_pass','required','message'=>'管理员密码不能为空','on'=>['add','login']],
-            ['admin_pass','validatePass'],
+            ['admin_pass','validatePass','on'=>['login']],
             ['surePass','required','message'=>'确认密码不能为空','on'=>['add']],
             ['surePass','compare','compareAttribute'=>'admin_pass','message'=>'两次密码输入不一致','on'=>['add']],
             ['admin_email','email','message'=>'邮箱格式不正确','on'=>['add']],
@@ -35,6 +37,7 @@ class Admin extends Common implements IdentityInterface
             ['admin_mobile','unique','message'=>'手机号已被注册','on'=>['add']],
             ['admin_pass','mkPass','on'=>['add']],
             ['rememberMe','boolean','on'=>'login'],
+            [['admin_mobile','admin_name','admin_qq'],'safe'],
         ];
     }
 
@@ -177,5 +180,47 @@ class Admin extends Common implements IdentityInterface
             return (bool)$this->save(false);
         }
         return false;
+    }
+
+    public function getList($params = '')
+    {
+        $pageSize = isset(Yii::$app->params['pageSize']['admin']) ? Yii::$app->params['pageSize']['admin'] : Yii::$app->params['pageSize']['public'];
+
+        $query = self::find()->select('admin_id,admin_name,admin_mobile,admin_qq,admin_real,login_time,admin_email,created_at')->orderBy('login_time');
+
+        $data = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => $pageSize]
+        ]);
+        $data->setSort([
+            'attributes' => [
+                /*=============*/
+                'admin_mobile' => [
+                    'asc' => ['admin_mobile' => SORT_ASC],
+                    'desc' => ['admin_mobile' => SORT_DESC],
+                ],
+                'login_time' => [
+                    'asc' => ['login_time' => SORT_ASC],
+                    'desc' => ['login_time' => SORT_DESC],
+                ],
+                'created_at' => [
+                    'asc' => ['created_at' => SORT_ASC],
+                    'desc' => ['created_at' => SORT_DESC]
+                ]
+                /*=============*/
+            ]
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $data;
+        }
+
+        $query->andFilterWhere([
+            'admin_qq' => $this->admin_qq,
+        ]);
+        $query->andFilterWhere(['like', 'admin_name', $this->admin_name]);
+        $query->andFilterWhere(['like', 'admin_mobile', $this->admin_mobile]);
+
+        return $data;
     }
 }
