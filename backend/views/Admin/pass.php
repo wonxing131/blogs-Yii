@@ -34,8 +34,6 @@ $model->surePass = '';
                         <?= $form
                             ->field($model,'surePass',$fieldOptions1)
                             ->passwordInput(['placeholder'=>'确认新密码'])?>
-
-
                     </div>
                     <!-- /.box-body -->
 

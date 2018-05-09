@@ -6,4 +6,9 @@ return [
     'pageSize' => [
         'public' => 10
     ],
+    'findPassSale' => [    //找回密码盐
+        'admin' => 'TC_ADMIN-PASS_EMAIL',
+        'user' => 'TC_USER-PASS_EMAIL'
+    ]
+
 ];

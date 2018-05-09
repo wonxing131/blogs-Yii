@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2018-04-26 18:45:26
+Date: 2018-05-09 21:46:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `blog_admin` (
   KEY `email` (`admin_email`,`admin_pass`),
   KEY `mobile` (`admin_mobile`,`admin_pass`),
   KEY `qq` (`admin_qq`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Table structure for blog_admin_login_log
@@ -49,7 +49,7 @@ CREATE TABLE `blog_admin_login_log` (
   `address` varchar(64) DEFAULT NULL COMMENT '登录地点',
   `created_at` int(10) DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Table structure for blog_auth_assignment
@@ -106,6 +106,19 @@ CREATE TABLE `blog_auth_rule` (
   `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Table structure for blog_email_log
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_email_log`;
+CREATE TABLE `blog_email_log` (
+  `email_log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `email` varchar(128) DEFAULT NULL COMMENT '收件人邮箱',
+  `token` char(41) DEFAULT NULL COMMENT '找回密码token',
+  `send_type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '2管理员找回密码3用户找回密码',
+  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`email_log_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='邮件发送日志';
 
 -- ----------------------------
 -- Table structure for blog_migration

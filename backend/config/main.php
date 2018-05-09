@@ -79,6 +79,25 @@ return [
                 '' => 'site/index'
             ],
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',    //指定邮件类
+            //'viewPath' => '@common/mail',   //指定邮件模版路径
+            'useFileTransport' => false,    ///false：非测试状态，发送真实邮件而非存储为文件
+            'transport' => [
+               'class' => 'Swift_SmtpTransport',
+               'host' => 'smtp.163.com',    //网易邮箱发送邮件服务器
+               'username' => '15590860585@163.com',    //服务器邮箱
+               'password' => 'dtc597945833',    //服务器授权码
+               'port' => '25',  //25|456
+               'encryption' => 'tls',   //tls|ssl
+           ],
+        ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 14,   //发送邮件设置为14号库
+        ],
     ],
     'params' => $params,
 ];

@@ -10,11 +10,17 @@ namespace backend\controllers;
 
 
 use backend\models\Admin;
+use backend\models\EmailLog;
 use Yii;
+use yii\db\Exception;
 
 
 class AdminController extends BaseController
 {
+
+    protected $access_except = ['reset-pass'];
+    protected $method = ['reset-pass'=>['get','post']];
+
     /**
      * 管理员添加
      * @return string
@@ -67,6 +73,11 @@ class AdminController extends BaseController
         ]);
     }
 
+    /**
+     * 管理员修改密码
+     * @return string|\yii\web\Response
+     * @throws \yii\base\Exception
+     */
     public function actionPass()
     {
         $model = new Admin();
@@ -81,5 +92,46 @@ class AdminController extends BaseController
         return $this->render('pass',[
             'model' => $model
         ]);
+    }
+
+    public function actionResetPass()
+    {
+        $this->layout = 'main-login.php';
+        $admin_model = new Admin();
+        $param = Yii::$app->request->get();
+        if (Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
+            if ($admin_model->resetPass($data)){
+                return $this->goHome();
+            }else{
+                return $this->render('resetPass',['token'=>$data['token'],'email'=>$data['email'],'model'=>$admin_model]);
+            }
+        }
+        if (isset($param['email']) && isset($param['token'])){
+            $email_log = new EmailLog;
+            $token = $email_log::find()
+                ->where([
+                    'and',
+                    ['email'=>$param['email']],
+                    ['token'=>$param['token']],
+                    ['>','created_at',time()-300],
+                    ['status'=>2],
+                    ['send_type'=>2]
+                ])
+                ->exists();
+            if (!$token){
+                echo '无效的链接！';
+            }else{
+                return $this->render('resetPass',['token'=>$param['token'],'email'=>$param['email'],'model'=>$admin_model]);
+            }
+        }else{
+            throw new Exception('无法访问');
+        }
+    }
+
+    public function actionRedis()
+    {
+//        return Yii::$app->redis->set('name1','老二');
+        return Yii::$app->redis->get('name1');
     }
 }

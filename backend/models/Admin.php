@@ -30,10 +30,10 @@ class Admin extends Common implements IdentityInterface
             ['admin_name','unique','message'=>'管理员帐号已经存在','on'=>['add']],
             ['admin_pass','required','message'=>'管理员密码不能为空','on'=>['add','login','editPass']],
             ['admin_pass','validatePass','on'=>['login']],
-            ['nowPass','required','message'=>'新密码不能为空','on'=>'editPass'],
-            ['surePass','required','message'=>'确认密码不能为空','on'=>['add','editPass']],
+            ['nowPass','required','message'=>'新密码不能为空','on'=>['editPass','resetPass']],
+            ['surePass','required','message'=>'确认密码不能为空','on'=>['add','editPass','resetPass']],
             ['surePass','compare','compareAttribute'=>'admin_pass','message'=>'两次密码输入不一致','on'=>['add']],
-            ['surePass','compare','compareAttribute'=>'nowPass','message'=>'两次密码输入不一致','on'=>['editPass']],
+            ['surePass','compare','compareAttribute'=>'nowPass','message'=>'两次密码输入不一致','on'=>['editPass','resetPass']],
             ['admin_email','email','message'=>'邮箱格式不正确','on'=>['add','editMy']],
             ['admin_email','unique','message'=>'邮箱已经被注册','filter' => function ($query) {
                 if (!$this->isNewRecord) {
@@ -280,9 +280,38 @@ class Admin extends Common implements IdentityInterface
                 $model->addError('admin_pass','原密码错误');
                 return false;
             }
+            $model->original_pass = $data['Admin']['nowPass'];
             $model->admin_pass = Yii::$app->getSecurity()->generatePasswordHash($data['Admin']['nowPass']);
             return (bool)$model->save(false);
         }
         return false;
+    }
+
+    public function resetPass($data)
+    {
+        //判断是否是修改密码状态
+        if (isset($data['token']) && isset($data['email'])){
+            $email_log = new EmailLog;
+            $token = $email_log::find()
+                ->where([
+                    'and',
+                    ['email'=>$data['email']],
+                    ['token'=>$data['token']],
+                    ['status'=>2],
+                    ['send_type'=>2]
+                ])->exists();
+            if (!$token){
+                throw new \Exception('无效的访问方式2');
+            }
+            $model = self::find()->where('admin_email = :e',[':e'=>$data['email']])->one();
+            $model->scenario = 'resetPass';
+            if ($model->load($data) && $model->validate()){
+                $model->original_pass = $data['Admin']['nowPass'];
+                $model->admin_pass = Yii::$app->getSecurity()->generatePasswordHash($data['Admin']['nowPass']);
+                $email_log::updateAll(['status'=>3],'token = :t and email = :e',[':t'=>$data['token'],':e'=>$data['email']]);
+                return (bool)$model->save(false);
+            }
+        }
+        throw new \Exception('无效的访问方式1');
     }
 }

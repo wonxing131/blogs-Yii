@@ -25,44 +25,29 @@ $fieldOptions2 = [
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">管理员登陆</p>
+        <p class="login-box-msg">找回密码</p>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
         <?= $form
-            ->field($model, 'loginName', $fieldOptions1)
+            ->field($model, 'admin_email', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => '用户名/手机/邮箱']) ?>
-
-        <?= $form
-            ->field($model, 'admin_pass', $fieldOptions2)
-            ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('admin_pass')]) ?>
+            ->textInput(['placeholder' => '绑定邮箱']) ?>
 
         <div class="row">
             <div class="col-xs-8">
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= Html::a('管理员登录',\yii\helpers\Url::toRoute(['/site/login']),['class'=>'btn btn-default btn-block btn-flat']) ?>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
-                <?= Html::submitButton('登录', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('点击验证', ['class' => 'btn btn-primary btn-block btn-flat']) ?>
             </div>
             <!-- /.col -->
         </div>
 
-
         <?php ActiveForm::end(); ?>
 
-        <div class="social-auth-links text-center">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in
-                using Facebook</a>
-            <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign
-                in using Google+</a>
-        </div>
-        <!-- /.social-auth-links -->
 
-        <a href="<?= \yii\helpers\Url::toRoute(['site/find-pass']) ?>">忘记密码?点击这里!</a><br>
 
     </div>
     <!-- /.login-box-body -->

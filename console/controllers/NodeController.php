@@ -48,7 +48,5 @@ class NodeController extends Controller
             $transaction->rollBack();
             echo 'import error ';
         }
-
-
     }
 }
