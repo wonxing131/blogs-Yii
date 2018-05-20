@@ -15,7 +15,7 @@ return [
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
             'currencyCode' => 'EUR',
-        ]
+        ],
     ],
     'timeZone'=>'Asia/Chongqing',
     'language' => 'zh-CN',

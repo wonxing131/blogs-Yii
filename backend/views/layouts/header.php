@@ -22,6 +22,16 @@ use yii\helpers\Html;
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">数据库备份</li>
+                        <li class="header"><a href="<?= \yii\helpers\Url::toRoute(['dump/backup']) ?>">备份sql数据文件</a></li>
+                        <li class="header"><a href="<?= \yii\helpers\Url::toRoute(['dump/export']) ?>">导出excel表结构</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
                         <span class="label label-success">4</span>
                     </a>

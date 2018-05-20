@@ -55,6 +55,16 @@
                         ]
                     ],
                     [
+                        'label' => '文章管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label'=>'文章分类','icon'=>'dashboard','url'=>['/category/list']],
+                            ['label'=>'文章列表','icon'=>'dashboard','url'=>['/article/list']],
+                            ['label'=>'添加文章','icon'=>'dashboard','url'=>['/article/add']],
+                        ]
+                    ],
+                    [
                         'label' => 'Some tools',
                         'icon' => 'share',
                         'url' => '#',
