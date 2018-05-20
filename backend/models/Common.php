@@ -32,4 +32,21 @@ class Common extends ActiveRecord
             ]
         ];
     }
+
+    /**
+     * 返回验证失败第一条错误信息
+     *
+     * @param object $model 当前model实例
+     * @return int|string
+     */
+    protected function firstError($model)
+    {
+        $errors = $model->getErrors();
+        if (!is_array($errors)){
+            return '';
+        }else{
+            $error = array_shift($errors);
+            return array_shift($error);
+        }
+    }
 }

@@ -47,7 +47,7 @@ class BaseController extends Controller
             ],
             'verbs' => [    //请求方法控制
                 'class' => VerbFilter::className(),
-                'actions' => $this->method   //控制请求方法
+                'actions' => $this->method   //控制请求方法  ['reset-pass'=>['get','post']];
             ],
         ];
     }
