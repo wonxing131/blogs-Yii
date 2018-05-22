@@ -2,10 +2,19 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 $this->title = '添加文章';
-
+\backend\assets\AppAsset::addCss($this,'@web/vendor/select2/dist/css/select2.min.css');
+\backend\assets\AppAsset::addCss($this,'@web/vendor/ueditor/themes/default/css/umeditor.css');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/select2/dist/js/select2.full.min.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/umeditor.config.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/umeditor.min.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/lang/zh-cn/zh-cn.js');
 $fieldOptions1 = [
     'options' => ['class' => 'form-group'],
     'inputTemplate' => "<div class='form-group'>{input}</div>"
+];
+$fieldOptions2 = [
+    'options' => ['class' => 'form-group'],
+    'inputTemplate' => '<div class="form-group">{input}</div>'
 ];
 ?>
 <!-- Main content -->
@@ -23,20 +32,15 @@ $fieldOptions1 = [
                 <?php $form =  ActiveForm::begin() ?>
                     <div class="box-body">
                         <?= $form
-                            ->field($model,'admin_name',$fieldOptions1)
-                            ->textInput(['placeholder'=>$model->getAttributeLabel('admin_name')]); ?>
+                            ->field($model,'title',$fieldOptions1)
+                            ->textInput(['placeholder'=>$model->getAttributeLabel('title')]); ?>
                         <?= $form
-                            ->field($model,'admin_email',$fieldOptions1)
-                            ->textInput(['placeholder'=>$model->getAttributeLabel('admin_email')]); ?>
+                            ->field($model,'category_id',$fieldOptions2)
+                            ->dropDownList(['1'=>'很多','2'=>'很少','3'=>'特别的爱','4'=>'特别的你'],['class'=>'form-control select2','style'=>'width:100%','prompt'=>'请选择相关分类']) ?>
                         <?= $form
-                            ->field($model,'admin_mobile',$fieldOptions1)
-                            ->textInput(['placeholder'=>$model->getAttributeLabel('admin_mobile')])?>
-                        <?= $form
-                            ->field($model,'admin_pass',$fieldOptions1)
-                            ->passwordInput(['placeholder'=>$model->getAttributeLabel('admin_pass')]); ?>
-                        <?= $form
-                            ->field($model,'surePass',$fieldOptions1)
-                            ->passwordInput(['placeholder'=>$model->getAttributeLabel('surePass')]) ?>
+                            ->field($model,'content',$fieldOptions1)
+                            ->textarea(['placeholder'=>'文章内容','id'=>'content']) ?>
+
                     </div>
                     <!-- /.box-body -->
 
@@ -53,3 +57,15 @@ $fieldOptions1 = [
 </section>
 <!-- /.content -->
 
+<script>
+<?php $this->beginBlock('script'); ?>
+    $(function () {
+        $('.select2').select2();
+
+        var um = UM.getEditor('content');
+        um.setHeight('300');
+        um.setWidth('100%');
+    });
+<?php $this->endBlock('script'); ?>
+<?php $this->registerJs($this->blocks['script'],\yii\web\View::POS_END) ?>
+</script>

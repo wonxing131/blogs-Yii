@@ -10,6 +10,7 @@ namespace backend\controllers;
 
 
 use backend\models\Article;
+use Yii;
 
 class ArticleController extends BaseController
 {
@@ -32,6 +33,10 @@ class ArticleController extends BaseController
     public function actionAdd()
     {
         $model = new Article();
+        if (Yii::$app->request->isPost){
+            dd(Yii::$app->request->post());
+
+        }
 
         return $this->render('add',[
             'model' => $model
