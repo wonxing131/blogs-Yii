@@ -23,4 +23,5 @@ class Article extends Common
             'is_del'            => '是否显示'
         ];
     }
+
 }

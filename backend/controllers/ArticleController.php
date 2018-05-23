@@ -10,6 +10,8 @@ namespace backend\controllers;
 
 
 use backend\models\Article;
+use backend\models\Category;
+use common\utils\ArrayUtil;
 use Yii;
 
 class ArticleController extends BaseController
@@ -33,13 +35,14 @@ class ArticleController extends BaseController
     public function actionAdd()
     {
         $model = new Article();
-        if (Yii::$app->request->isPost){
-            dd(Yii::$app->request->post());
 
-        }
-
+        //获取分类信息
+        $category_model = new Category();
+        $category_list = ArrayUtil::tree_to_array($category_model->getCate());
+        dd($category_list);die();
         return $this->render('add',[
-            'model' => $model
+            'model'         => $model,
+            'category_list' => $category_list
         ]);
     }
 }

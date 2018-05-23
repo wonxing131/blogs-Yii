@@ -8,14 +8,14 @@ $this->title = '添加文章';
 \backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/umeditor.config.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/umeditor.min.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/lang/zh-cn/zh-cn.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/laydate/laydate.js');
 $fieldOptions1 = [
     'options' => ['class' => 'form-group'],
     'inputTemplate' => "<div class='form-group'>{input}</div>"
 ];
-$fieldOptions2 = [
-    'options' => ['class' => 'form-group'],
-    'inputTemplate' => '<div class="form-group">{input}</div>'
-];
+if ($model->isNewRecord){
+    $model->is_del = 2;
+}
 ?>
 <!-- Main content -->
 <section class="content">
@@ -35,11 +35,21 @@ $fieldOptions2 = [
                             ->field($model,'title',$fieldOptions1)
                             ->textInput(['placeholder'=>$model->getAttributeLabel('title')]); ?>
                         <?= $form
-                            ->field($model,'category_id',$fieldOptions2)
+                            ->field($model,'category_id',$fieldOptions1)
                             ->dropDownList(['1'=>'很多','2'=>'很少','3'=>'特别的爱','4'=>'特别的你'],['class'=>'form-control select2','style'=>'width:100%','prompt'=>'请选择相关分类']) ?>
                         <?= $form
                             ->field($model,'content',$fieldOptions1)
                             ->textarea(['placeholder'=>'文章内容','id'=>'content']) ?>
+                        <?= $form
+                            ->field($model,'is_del',$fieldOptions1)
+                            ->radioList(['2'=>'立即发布','3'=>'稍后发布'])?>
+
+                        <div class="form-group sentTime">
+                            <label class="control-label" for="article-title">发布时间</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="sendTime" id="sendTime" placeholder="发布时间">
+                            </div>
+                        </div>
 
                     </div>
                     <!-- /.box-body -->
@@ -62,10 +72,34 @@ $fieldOptions2 = [
     $(function () {
         $('.select2').select2();
 
+        if ($('input[type="radio"]').val() == 2){
+            $('.sentTime').css('display','none');
+        }else{
+            $('.sentTime').css('display','block');
+        }
+
+        laydate.render({
+            elem : '#sendTime',
+            format : 'yyyy-MM-dd HH:mm',
+            type : 'datetime',
+            min : '<?= date('Y-m-d H:i',time()) ?>',
+            calendar : true,
+        });
+
+        //实例化umeditor编辑器
         var um = UM.getEditor('content');
         um.setHeight('300');
         um.setWidth('100%');
     });
+
+    $('input[type="radio"]').change(function () {
+        if ($(this).val() == 2){
+            $('.sentTime').css('display','none');
+        }else if($(this).val() == 3){
+            $('.sentTime').css('display','block');
+        }
+    });
+
 <?php $this->endBlock('script'); ?>
 <?php $this->registerJs($this->blocks['script'],\yii\web\View::POS_END) ?>
 </script>
