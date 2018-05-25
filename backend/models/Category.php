@@ -61,6 +61,7 @@ class Category extends Common
             $this->setAttributes($data);
             if ($this->save()){
                 Yii::$app->cache->delete('category');
+                Yii::$app->cache->delete('category_list');
                 return ['state' => 1 , 'message' => '添加成功,默认状态为显示'];
             }else{
                 return ['state' => 0 , 'message' => $this->firstError($this)];
@@ -76,6 +77,7 @@ class Category extends Common
             $model->category_name = $data['category_name'];
             if ($model->save()){
                 Yii::$app->cache->delete('category');
+                Yii::$app->cache->delete('category_list');
                 return ['state' => 1 , 'message' => '修改成功'];
             }else{
                 return ['state' => 0, 'message' => $this->firstError($model)];
@@ -90,10 +92,46 @@ class Category extends Common
             $data['is_show'] == 2 ? $is_show = 3 : $is_show = 2;
             if (self::updateAll(['is_show'=>$is_show],['in','category_id',$data['ids']])){
                 Yii::$app->cache->delete('category');
+                Yii::$app->cache->delete('category_list');
                 return ['state' => 1 , 'message' => '修改完毕'];
             }
         }
         return ['state' => 0 , 'message' => '数据错误'];
+    }
+
+    public function getLevelList()
+    {
+        $return = Yii::$app->cache->get('category_list');
+        if (!$return){
+            $data = self::find()
+                ->select('category_id,category_name,parent_id')
+                ->asArray()
+                ->all();
+            $list = $this->levelList($data);
+            $return = [];
+            foreach ($list as $item){
+                $star = '';
+                for ($i = 0 ; $i < $item['deep'] ; $i++){
+                    $star .= '-  ';
+                }
+                $return[$item['category_id']] = $star.$item['category_name'];
+            }
+            Yii::$app->cache->set('category_list',$return);
+        }
+        return $return;
+    }
+
+    private function levelList(array $data,$parent_id = 0,$deep = 1)
+    {
+        static $arr = [];
+        foreach ($data as $key => $value){
+            if ($value['parent_id'] == $parent_id){
+                $value['deep'] = $deep;
+                $arr[] = $value;
+                $this->levelList($data,$value['category_id'],$deep+1);
+            }
+        }
+        return $arr;
     }
 
 }

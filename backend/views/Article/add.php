@@ -36,7 +36,7 @@ if ($model->isNewRecord){
                             ->textInput(['placeholder'=>$model->getAttributeLabel('title')]); ?>
                         <?= $form
                             ->field($model,'category_id',$fieldOptions1)
-                            ->dropDownList(['1'=>'很多','2'=>'很少','3'=>'特别的爱','4'=>'特别的你'],['class'=>'form-control select2','style'=>'width:100%','prompt'=>'请选择相关分类']) ?>
+                            ->dropDownList($category_list,['class'=>'form-control select2','style'=>'width:100%','prompt'=>'请选择相关分类']) ?>
                         <?= $form
                             ->field($model,'content',$fieldOptions1)
                             ->textarea(['placeholder'=>'文章内容','id'=>'content']) ?>

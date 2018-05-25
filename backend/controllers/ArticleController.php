@@ -10,6 +10,7 @@ namespace backend\controllers;
 
 
 use backend\models\Article;
+use backend\models\ArticleLabel;
 use backend\models\Category;
 use common\utils\ArrayUtil;
 use Yii;
@@ -38,11 +39,21 @@ class ArticleController extends BaseController
 
         //获取分类信息
         $category_model = new Category();
-        $category_list = ArrayUtil::tree_to_array($category_model->getCate());
-        dd($category_list);die();
+        $category_list = $category_model->getLevelList();
         return $this->render('add',[
             'model'         => $model,
             'category_list' => $category_list
         ]);
     }
+
+    /**
+     * 文章标签列表
+     *
+     * @return string
+     */
+    public function actionLabel()
+    {
+        return $this->render('labelList');
+    }
+
 }

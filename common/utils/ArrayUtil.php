@@ -49,8 +49,7 @@ class ArrayUtil
     public static function tree_to_array(array $tree,$children = 'children')
     {
         $array      = [];
-        foreach ($tree as $k => $v)
-        {
+        foreach ($tree as $k => $v){
             $return_arr = [];
             if (!empty($v[$children])){
                 $temp = $v[$children];
@@ -63,9 +62,21 @@ class ArrayUtil
         return $array;
     }
 
-    public static function array_format($array,$format)
+    /**
+     *
+     * 将数组组装成需要的格式
+     *
+     * @param array $array 原始数组
+     * @param array $format 需要的格式 key => $arr[0] value => [1]
+     * @return array
+     */
+    public static function array_format(array $array,array $format)
     {
-        
+        $format_array = [];
+        foreach ($array as $key => $value){
+            $format_array[$value[$format[0]]] = $value[$format[1]];
+        }
+        return $format_array;
     }
 
 }
