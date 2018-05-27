@@ -51,7 +51,7 @@ class PermissionController extends BaseController
             'query' => (new Query())->from($auth->itemTable)->where('type = 1')->orderBy('created_at desc'),
             'pagination' => ['pageSize'=>5]
         ]);
-        return $this->render('roles',['data'=>$data]);
+        return $this->render('roles',['data' => $data]);
     }
 
     /**

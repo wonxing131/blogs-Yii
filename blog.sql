@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2018-05-11 21:10:25
+Date: 2018-05-27 23:18:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,13 +36,13 @@ CREATE TABLE `blog_admin` (
   KEY `email` (`admin_email`,`admin_pass`),
   KEY `mobile` (`admin_mobile`,`admin_pass`),
   KEY `qq` (`admin_qq`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Records of blog_admin
 -- ----------------------------
-INSERT INTO `blog_admin` VALUES ('1', 'admin', '$2y$13$JKWhqzUYf3LThLFcBMZqveiKRhU3.gu2RKBh.nswe/DX5/jHNLRFW', '789456', 'admin@admin.cn', '', '15590860585', '', '2018-05-10 12:08:04', '1524306970', '1525881717');
-INSERT INTO `blog_admin` VALUES ('2', 'bdmin', '$2y$13$oeM5WIA87ESUDVK6Iwn1LOg62DYUajQVkE1vC8X/7VL4aTQFmBisa', '123456', 'dingtongchuan@outlook.com', '', '13645845789', '', '2018-04-26 19:15:30', '1524727196', '1524727196');
+INSERT INTO `blog_admin` VALUES ('1', 'admin', '$2y$13$JKWhqzUYf3LThLFcBMZqveiKRhU3.gu2RKBh.nswe/DX5/jHNLRFW', '789456', 'admin@admin.cn', '', '15590860585', '', '2018-05-12 13:59:31', '1524306970', '1525881717');
+INSERT INTO `blog_admin` VALUES ('2', 'bdmin', '$2y$13$oeM5WIA87ESUDVK6Iwn1LOg62DYUajQVkE1vC8X/7VL4aTQFmBisa', '123456', 'dingtongchuan@outlook.com', '', '13645845789', '', '2018-05-27 16:03:45', '1524727196', '1524727196');
 INSERT INTO `blog_admin` VALUES ('3', 'cdmin', '$2y$13$1r7HZ4RdsPTNjQ7OoVXJYe3NZM6KnCif8KExQHyI25RL62ZHh2EDe', '654321', '759080442@qq.com', '赵发', '13645845787', '7894562', '2018-05-10 00:12:31', '1524727231', '1525882328');
 
 -- ----------------------------
@@ -56,7 +56,7 @@ CREATE TABLE `blog_admin_login_log` (
   `address` varchar(64) DEFAULT NULL COMMENT '登录地点',
   `created_at` int(10) DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Records of blog_admin_login_log
@@ -70,6 +70,9 @@ INSERT INTO `blog_admin_login_log` VALUES ('7', '1', '2130706433', null, '152588
 INSERT INTO `blog_admin_login_log` VALUES ('8', '3', '2130706433', null, '1525882351');
 INSERT INTO `blog_admin_login_log` VALUES ('9', '1', '2130706433', null, '1525882857');
 INSERT INTO `blog_admin_login_log` VALUES ('10', '1', '2130706433', null, '1525925284');
+INSERT INTO `blog_admin_login_log` VALUES ('11', '1', '2130706433', null, '1526104771');
+INSERT INTO `blog_admin_login_log` VALUES ('12', '2', '2130706433', null, '1526701840');
+INSERT INTO `blog_admin_login_log` VALUES ('13', '2', '2130706433', null, '1527408225');
 
 -- ----------------------------
 -- Table structure for blog_article
@@ -123,14 +126,18 @@ CREATE TABLE `blog_article_label` (
   `article_label_id` smallint(6) NOT NULL AUTO_INCREMENT COMMENT '文章标签',
   `name` varchar(10) NOT NULL DEFAULT '' COMMENT '标签内容',
   `class` varchar(24) NOT NULL DEFAULT '' COMMENT '颜色类名',
+  `is_del` tinyint(1) NOT NULL DEFAULT '3' COMMENT '是否展示2展示3隐藏',
   `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
   `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`article_label_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章标签表';
 
 -- ----------------------------
 -- Records of blog_article_label
 -- ----------------------------
+INSERT INTO `blog_article_label` VALUES ('1', 'mysql', 'aqua', '3', '1527423713', '1527434000');
+INSERT INTO `blog_article_label` VALUES ('2', 'php', 'maroon', '3', '1527424013', '1527424013');
+INSERT INTO `blog_article_label` VALUES ('3', 'yii', 'white', '2', '1527424024', '1527424024');
 
 -- ----------------------------
 -- Table structure for blog_auth_assignment
@@ -235,11 +242,30 @@ CREATE TABLE `blog_category` (
   `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
   `updated_at` int(11) DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章分类表';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='文章分类表';
 
 -- ----------------------------
 -- Records of blog_category
 -- ----------------------------
+INSERT INTO `blog_category` VALUES ('1', '家主', '0', '2', '1', '2', '0', '1526818112');
+INSERT INTO `blog_category` VALUES ('2', '二当家的', '0', '2', '1', '2', '0', '1526828878');
+INSERT INTO `blog_category` VALUES ('3', '三级分类', '0', '2', '1', '2', '0', '0');
+INSERT INTO `blog_category` VALUES ('4', '一级儿子', '1', '2', '1', '2', '0', '1526806290');
+INSERT INTO `blog_category` VALUES ('5', '二儿子', '1', '2', '1', '2', '0', '1526827666');
+INSERT INTO `blog_category` VALUES ('6', '美人胚子', '2', '2', '1', '2', '0', '1526829026');
+INSERT INTO `blog_category` VALUES ('7', '二级下属2', '2', '2', '1', '3', '0', '0');
+INSERT INTO `blog_category` VALUES ('8', '二级下属3', '2', '2', '1', '2', '0', '0');
+INSERT INTO `blog_category` VALUES ('9', '大孙子', '4', '2', '1', '2', '0', '1526817997');
+INSERT INTO `blog_category` VALUES ('10', '大孙女', '4', '2', '1', '2', '0', '1526828985');
+INSERT INTO `blog_category` VALUES ('11', '小孙子', '4', '2', '0', '2', '1526818015', '1526818015');
+INSERT INTO `blog_category` VALUES ('12', '小儿子', '1', '2', '0', '3', '1526818145', '1526818145');
+INSERT INTO `blog_category` VALUES ('13', '老小', '0', '2', '0', '2', '1526822966', '1526823622');
+INSERT INTO `blog_category` VALUES ('14', '真小孙子', '12', '2', '0', '3', '1526826537', '1526826537');
+INSERT INTO `blog_category` VALUES ('15', '长老  ', '0', '2', '0', '2', '1526827722', '1526827791');
+INSERT INTO `blog_category` VALUES ('16', '纨绔子弟', '15', '2', '0', '2', '1526827756', '1526827756');
+INSERT INTO `blog_category` VALUES ('17', '穿越男主', '16', '2', '0', '2', '1526827811', '1526827811');
+INSERT INTO `blog_category` VALUES ('18', '小长老', '0', '2', '0', '2', '1526827840', '1526827840');
+INSERT INTO `blog_category` VALUES ('19', '科技大佬', '18', '2', '0', '2', '1526827852', '1526827852');
 
 -- ----------------------------
 -- Table structure for blog_email_log

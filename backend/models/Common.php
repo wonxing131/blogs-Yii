@@ -39,7 +39,7 @@ class Common extends ActiveRecord
      * @param object $model 当前model实例
      * @return int|string
      */
-    protected function firstError($model)
+    public function firstError($model)
     {
         $errors = $model->getErrors();
         if (!is_array($errors)){
@@ -48,5 +48,17 @@ class Common extends ActiveRecord
             $error = array_shift($errors);
             return array_shift($error);
         }
+    }
+
+    /**
+     *
+     * 获取设置的pageSize,若未设置返回默认设置
+     *
+     * @param string $key 数组键值
+     * @return int  pageSize
+     */
+    public function getPageSize($key = 'public')
+    {
+        return isset(\Yii::$app->params['pageSize'][$key]) ? \Yii::$app->params['pageSize'][$key] : \Yii::$app->params['pageSize']['public'];
     }
 }
