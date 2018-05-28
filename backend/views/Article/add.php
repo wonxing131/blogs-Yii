@@ -3,10 +3,9 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 $this->title = '添加文章';
 \backend\assets\AppAsset::addCss($this,'@web/vendor/select2/dist/css/select2.min.css');
-\backend\assets\AppAsset::addCss($this,'@web/vendor/ueditor/themes/default/css/umeditor.css');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/select2/dist/js/select2.full.min.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/ueditor.config.js');
-\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/ueditor.min.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/ueditor.all.min.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/lang/zh-cn/zh-cn.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/laydate/laydate.js');
 $fieldOptions1 = [
@@ -91,8 +90,6 @@ if ($model->isNewRecord){
 
         //实例化umeditor编辑器
         var ue = UE.getEditor('content');
-        ue.setHeight('300');
-        ue.setWidth('100%');
     });
 
     $('input[type="radio"]').change(function () {
