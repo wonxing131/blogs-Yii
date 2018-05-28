@@ -12,7 +12,9 @@ namespace backend\controllers;
 use backend\models\Article;
 use backend\models\ArticleLabel;
 use backend\models\Category;
+use common\utils\ArrayUtil;
 use Yii;
+use yii\base\ErrorException;
 use yii\data\ActiveDataProvider;
 
 class ArticleController extends BaseController
@@ -40,9 +42,17 @@ class ArticleController extends BaseController
         //获取分类信息
         $category_model = new Category();
         $category_list = $category_model->getLevelList();
+        if (Yii::$app->request->isPost){
+            $post = Yii::$app->request->post();
+        }
+
+        //获取标签信息
+        $label_list = ArticleLabel::find()->select('article_label_id,name')->asArray()->all();
+        $label_list = ArrayUtil::array_format($label_list,['article_label_id','name']);
         return $this->render('add',[
             'model'         => $model,
-            'category_list' => $category_list
+            'category_list' => $category_list,
+            'label_list'    => $label_list
         ]);
     }
 
@@ -100,7 +110,7 @@ class ArticleController extends BaseController
         $model = new ArticleLabel();
         $model->scenario = 'add';
         if (Yii::$app->request->isPost){
-            if ($model->add(Yii::$app->request->post(),$model)){
+            if ($model->set(Yii::$app->request->post(),$model)){
                 Yii::$app->session->setFlash('info','添加成功');
             }else{
                 Yii::$app->session->setFlash('error','添加失败');
@@ -113,7 +123,21 @@ class ArticleController extends BaseController
 
     public function actionLabelEdit()
     {
-
+        $id = Yii::$app->request->get('id');
+        if (!($model = ArticleLabel::findOne($id))){
+            throw new ErrorException('错误的请求参数');
+        }
+        $model->scenario = 'update';
+        if (Yii::$app->request->isPost){
+            if ($model->set(Yii::$app->request->post(),$model)){
+                Yii::$app->session->setFlash('info','修改成功');
+            }else{
+                Yii::$app->session->setFlash('error','修改失败');
+            }
+        }
+        return $this->render('labelEdit',[
+            'model' => $model
+        ]);
     }
 
     public function actionLabelDel()

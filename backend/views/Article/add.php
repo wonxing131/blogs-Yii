@@ -5,8 +5,8 @@ $this->title = '添加文章';
 \backend\assets\AppAsset::addCss($this,'@web/vendor/select2/dist/css/select2.min.css');
 \backend\assets\AppAsset::addCss($this,'@web/vendor/ueditor/themes/default/css/umeditor.css');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/select2/dist/js/select2.full.min.js');
-\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/umeditor.config.js');
-\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/umeditor.min.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/ueditor.config.js');
+\backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/ueditor.min.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/ueditor/lang/zh-cn/zh-cn.js');
 \backend\assets\AppAsset::addScript($this,'@web/vendor/laydate/laydate.js');
 $fieldOptions1 = [
@@ -40,6 +40,9 @@ if ($model->isNewRecord){
                         <?= $form
                             ->field($model,'content',$fieldOptions1)
                             ->textarea(['placeholder'=>'文章内容','id'=>'content']) ?>
+                        <?= $form
+                            ->field($model,'article_label_id',$fieldOptions1)
+                            ->dropDownList($label_list,['class'=>'form-control select2','style'=>'width:100%','prompt'=>'请选择文章标签','multiple'=>'multiple'])?>
                         <?= $form
                             ->field($model,'is_del',$fieldOptions1)
                             ->radioList(['2'=>'立即发布','3'=>'稍后发布'])?>
@@ -87,9 +90,9 @@ if ($model->isNewRecord){
         });
 
         //实例化umeditor编辑器
-        var um = UM.getEditor('content');
-        um.setHeight('300');
-        um.setWidth('100%');
+        var ue = UE.getEditor('content');
+        ue.setHeight('300');
+        ue.setWidth('100%');
     });
 
     $('input[type="radio"]').change(function () {

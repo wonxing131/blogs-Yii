@@ -37,8 +37,15 @@ class ArticleLabel extends Common
         ];
     }
 
-
-    public function add($data,$model)
+    /**
+     *
+     * create update 方法
+     *
+     * @param array $data
+     * @param object $model
+     * @return bool
+     */
+    public function set($data,$model)
     {
         if ($model->load($data) && $model->validate()){
             return (bool)$model->save(false);

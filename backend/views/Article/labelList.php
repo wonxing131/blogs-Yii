@@ -49,7 +49,7 @@ $this->title = '文章标签';
                                 'template' => '{update} {delete}',
                                 'buttons' => [
                                     'update' => function($url, $model, $key){
-                                        return Html::a('更新',['label-update','name'=>$model['article_label_id']]);
+                                        return Html::a('更新',['label-edit','id'=>$model['article_label_id']]);
                                     },
                                     'delete' => function($url, $model, $key){
                                         return Html::a('显示',['label-del','id'=>$model['article_label_id'],'status'=>$model['is_del']]);
