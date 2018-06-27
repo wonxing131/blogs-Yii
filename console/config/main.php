@@ -9,7 +9,10 @@ $params = array_merge(
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'queue'
+    ],
     'controllerNamespace' => 'console\controllers',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -43,6 +46,12 @@ return [
             'hostname' => 'localhost',
             'port' => 6379,
             'database' => 0,   //发送邮件设置为14号库
+        ],
+        'queue' => [
+            'class' => 'yii\queue\redis\Queue::class',
+            'as log' => 'yii\queue\LogBehavior::class',
+            'redis' => 'redis',
+            'channel' => 'queue'
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',    //指定邮件类
