@@ -9,7 +9,7 @@ $fieldOptions1 = [
     'options' => ['class' => 'form-group'],
     'inputTemplate' => "<div class='form-group'>{input}</div>"
 ];
-if ($model->isNewRecord){
+if (!empty($this->is_del)){
     $model->is_del = 2;
 }
 ?>
@@ -92,11 +92,16 @@ if ($model->isNewRecord){
 
     $('input[type="radio"]').change(function () {
         if ($(this).val() == 2){
-            $('.sentTime').css('display','none');
-        }else if($(this).val() == 3){
-            $('.sentTime').css('display','block');
+            $('.field-sendTime').css('display','none');
+        }else if($(this).val() == 4){
+            $('.field-sendTime').css('display','block');
         }
     });
+
+    <?php if ($model->is_del == 4): ?>
+        $('.field-sendTime').css('display','none');
+    <?php endif; ?>
+
 
 <?php $this->endBlock('script'); ?>
 <?php $this->registerJs($this->blocks['script'],\yii\web\View::POS_END) ?>

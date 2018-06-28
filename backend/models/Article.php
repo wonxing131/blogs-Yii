@@ -35,7 +35,7 @@ class Article extends Common
             ['article_label_id','formatLabel'],
             ['is_del','required','message'=>'请选择是否发布'],
             ['is_del','in','range'=>[2,3,4],'message'=>'请正确选择发布状态'],
-            ['sendTime','date','message'=>'请正确选择发布时间'],
+            ['sendTime','checkTime','message'=>'请正确选择发布时间'],
             ['is_del','isQueue']
         ];
     }
@@ -88,6 +88,39 @@ class Article extends Common
     //将文章信息添加入队列
     public function isQueue()
     {
+        if (!$this->hasErrors() && $this->is_del == 4){
+            if (!$this->sendTime){
+                $this->addErrors(['is_del'=>'请填写发送时间']);
+            }
+        }
+        return true;
+    }
 
+    //验证发送时间
+    public function checkTime()
+    {
+        if (!$this->hasErrors() && $this->is_del == 4){
+            if (empty($this->sendTime)) {
+                $this->addError('sendTime', ['请填写发送时间']);
+            }else{
+                //验证是否为正确时间格式
+                $dateTime = strtotime($this->sendTime);
+                if (date('Y-m-d H:i:s',$dateTime) == $this->sendTime){
+                    if ($dateTime <= time()){
+                        $this->is_del = 2;
+                    }
+                }else{
+                    $this->addError('sendTime',['请填写正确时间格式']);
+                }
+            }
+        }
+        return true;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        echo $this->sendTime;
+        echo \Yii::$app->db->getLastInsertID();
+        die();
     }
 }
