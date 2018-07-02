@@ -10,6 +10,7 @@ namespace backend\models;
 
 
 use common\utils\StringUtil;
+use logic\queue\PublishArticleQueue;
 use yii\helpers\Markdown;
 
 class Article extends Common
@@ -119,8 +120,9 @@ class Article extends Common
 
     public function afterSave($insert, $changedAttributes)
     {
-        echo $this->sendTime;
-        echo \Yii::$app->db->getLastInsertID();
-        die();
+        $publish    =  $this->sendTime;
+        $article_id = \Yii::$app->db->getLastInsertID();
+        $queue = new PublishArticleQueue();
+        $queue->push($article_id, $publish);
     }
 }

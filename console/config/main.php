@@ -48,8 +48,8 @@ return [
             'database' => 0,   //发送邮件设置为14号库
         ],
         'queue' => [
-            'class' => 'yii\queue\redis\Queue::class',
-            'as log' => 'yii\queue\LogBehavior::class',
+            'class' => 'yii\queue\redis\Queue',
+            'as log' => 'yii\queue\LogBehavior',
             'redis' => 'redis',
             'channel' => 'queue'
         ],
