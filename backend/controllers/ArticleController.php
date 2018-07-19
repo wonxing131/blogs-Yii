@@ -13,6 +13,7 @@ use backend\models\Article;
 use backend\models\ArticleLabel;
 use backend\models\Category;
 use common\utils\ArrayUtil;
+use logic\queue\PublishArticleQueue;
 use Yii;
 use yii\base\ErrorException;
 use yii\data\ActiveDataProvider;

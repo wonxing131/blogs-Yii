@@ -28,11 +28,15 @@ class PublishArticleQueue extends AsyncQueue
         }else{
             $delay = 0;
         }
+        file_put_contents('/tmp/queue.log',date('y-m-d h:i:s',time()).':'.'步骤二 : '.$delay.PHP_EOL,FILE_APPEND);
         $job_id = $this->push_job($article_id, $job, $delay);
         if ($job_id > 0){
+            file_put_contents('/tmp/queue.log',date('y-m-d h:i:s',time()).':'.'队列入成功任务号:'.$job_id.PHP_EOL,FILE_APPEND);
             //记录成功日志
         }else{
+            file_put_contents('/tmp/queue.log',date('y-m-d h:i:s',time()).':'.'队列入失败:'.$job_id.PHP_EOL,FILE_APPEND);
             //记录失败日志
         }
     }
+
 }

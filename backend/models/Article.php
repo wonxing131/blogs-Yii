@@ -106,7 +106,7 @@ class Article extends Common
             }else{
                 //验证是否为正确时间格式
                 $dateTime = strtotime($this->sendTime);
-                if (date('Y-m-d H:i:s',$dateTime) == $this->sendTime){
+                if (date('Y-m-d H:i',$dateTime) == $this->sendTime){
                     if ($dateTime <= time()){
                         $this->is_del = 2;
                     }
@@ -123,6 +123,7 @@ class Article extends Common
         $publish    =  $this->sendTime;
         $article_id = \Yii::$app->db->getLastInsertID();
         $queue = new PublishArticleQueue();
+        file_put_contents('/tmp/queue.log',date('y-m-d h:i:s',time()).':'.'步骤一'.PHP_EOL,FILE_APPEND);
         $queue->push($article_id, $publish);
     }
 }

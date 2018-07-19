@@ -38,7 +38,6 @@ class AsyncQueue
         if ($this->check_key($key) == 0){
             return 0;
         }
-
         if ($delay > 0){
             $job_id = $this->_queue->delay($delay)->push($job_obj);
         }else{

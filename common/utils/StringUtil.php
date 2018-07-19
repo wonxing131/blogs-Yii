@@ -15,7 +15,7 @@ class StringUtil
      *
      * 剔除html中的标签已经空格,多用于截取文章简介
      *
-     * @param String $string
+     * @param $string
      * @return null|string|string[]
      */
     public static function html_tags(String $string)
@@ -24,4 +24,5 @@ class StringUtil
         $pattern = '/\s/';
         return preg_replace($pattern,'',$html);
     }
+
 }
