@@ -19,7 +19,7 @@ return [
         ],
         'redis' => [
             'class' => 'yii\redis\Connection',
-            'hostname' => 'localhost',
+            'hostname' => '127.0.0.1',
             'port' => 6379,
             'database' => 0,   //发送邮件设置为14号库
         ],

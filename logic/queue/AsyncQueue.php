@@ -28,6 +28,7 @@ class AsyncQueue
     public function __construct()
     {
         $this->_redis = Yii::$app->redis;
+        $this->_redis->database = 0;
         if (empty($this->_queue)){
             $this->_queue = Yii::$app->queue;
         }
@@ -44,12 +45,12 @@ class AsyncQueue
             $job_id = $this->_queue->push($job_obj);
         }
         if ( ! $this->_queue->isDone($job_id)){
+
             $data = json_encode(['ts' => time(),'job' => $job_id, 'count' => 0]);
             $this->_redis->hset($this->_name, $key, $data);
             $this->_redis->expire($this->_name, 600);
         }
 
-        return $job_id;
     }
 
     protected function check_key($key)

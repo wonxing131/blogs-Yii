@@ -20,17 +20,8 @@ class PublishArticleJob extends BaseObject implements RetryableJobInterface
     public $ttr = 30;
     public $max_retries = 3;
 
-    public function __construct($article_id, $publishTime)
-    {
-        parent::__construct();
-        $this->article_id = $article_id;
-        $this->publishTime = $publishTime;
-    }
-
-
     public function execute($queue)
     {
-        file_put_contents('/tmp/queue.log',date('y-m-d h:i:s',time()).':'.'到这就算出来了:'.PHP_EOL,FILE_APPEND);
         $cond = ['article_id' => $this->article_id];
         $article = Article::find()->where($cond)->one();
         if (empty($article)){
