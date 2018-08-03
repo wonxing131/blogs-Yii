@@ -76,7 +76,8 @@ return [
             'rules' => [
                 "<controller:\w+>/<id:\d+>"=>"<controller>/view",
                 "<controller:\w+>/<action:\w+>"=>"<controller>/<action>",
-                '' => 'site/index'
+                '' => 'site/index',
+                'debug/<controller>/<action>'=>'debug/<controller>/<action>'
             ],
         ],
         'mailer' => [

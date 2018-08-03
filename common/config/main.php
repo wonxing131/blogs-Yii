@@ -4,7 +4,13 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'bootstrap' => ['queue'],
+    'bootstrap' => ['queue','debug','log'],
+    'modules'   => [
+        'debug' => [
+            'class' => 'yii\debug\Module',
+            'allowedIPs' => ['*.*.*.*','127.0.0.1','::1']
+        ],
+    ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
@@ -29,6 +35,9 @@ return [
             'redis' => 'redis',
             'channel' => 'queue'
         ],
+        'log'   => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+        ]
     ],
     'timeZone'=>'Asia/Chongqing',
     'language' => 'zh-CN',
