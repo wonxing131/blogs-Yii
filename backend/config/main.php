@@ -66,7 +66,7 @@ return [
         ],
 
         'urlManager' => [   //url管理
-            'enablePrettyUrl' => true,  //开启url美化
+            'enablePrettyUrl' => false,  //开启url美化
             'showScriptName' => false,  //是否在url中显示入口脚本,url的进一步解析
             // 是否启用严格解析，如启用严格解析，要求当前请求应至少匹配1个路由规则，
             // 否则认为是无效路由。
@@ -76,7 +76,8 @@ return [
             'rules' => [
                 "<controller:\w+>/<id:\d+>"=>"<controller>/view",
                 "<controller:\w+>/<action:\w+>"=>"<controller>/<action>",
-                '' => 'site/index'
+                '' => 'site/index',
+                'debug/<controller>/<action>'=>'debug/<controller>/<action>'
             ],
         ],
         'mailer' => [
@@ -97,6 +98,11 @@ return [
             'hostname' => 'localhost',
             'port' => 6379,
             'database' => 14,   //发送邮件设置为14号库
+        ],
+    ],
+    'controllerMap' => [
+        'attachment' => [
+            'class' => 'yiichina\mdeditor\controllers\AttachmentController',
         ],
     ],
     'params' => $params,

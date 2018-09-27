@@ -13,6 +13,7 @@ use backend\models\Article;
 use backend\models\ArticleLabel;
 use backend\models\Category;
 use common\utils\ArrayUtil;
+use logic\queue\PublishArticleQueue;
 use Yii;
 use yii\base\ErrorException;
 use yii\data\ActiveDataProvider;
@@ -44,6 +45,12 @@ class ArticleController extends BaseController
         $category_list = $category_model->getLevelList();
         if (Yii::$app->request->isPost){
             $post = Yii::$app->request->post();
+            if ($model->add($post)){
+                //添加文章成功
+                return $this->redirect(['article/list']);
+            }else{
+                Yii::$app->session->setFlash('error','添加失败');
+            }
         }
 
         //获取标签信息
